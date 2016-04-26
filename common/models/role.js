@@ -289,7 +289,14 @@ module.exports = function(Role) {
     var resolver = Role.resolvers[role];
     if (resolver) {
       debug('Custom resolver found for role %s', role);
-      resolver(role, context, callback);
+
+      var promise = resolver(role, context, callback);
+      if (promise && typeof promise.then === 'function') {
+        promise.then(
+          function(result) { callback(null, result); },
+          callback
+        );
+      }
       return;
     }
 

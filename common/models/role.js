@@ -121,7 +121,11 @@ module.exports = function(Role) {
    * Add custom handler for roles.
    * @param {String} role Name of role.
    * @param {Function} resolver Function that determines if a principal is in the specified role.
-   * Signature must be `function(role, context, callback)`
+   * Signature could be using callback: `function(role, context, callback)`
+   * or returning promise:
+   * `function(role, context) {
+   *    return new Promise(function(resolve, reject){});
+   *  }`
    */
   Role.registerResolver = function(role, resolver) {
     if (!Role.resolvers) {
